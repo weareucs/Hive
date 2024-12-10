@@ -147,9 +147,9 @@ void resetAll() {
 }
 
 String getStatusJson() {
-  char data[200];
+  char data[300];
   snprintf(data, sizeof(data),
-           "{\"devices\":[{\"id\":1,\"status\":%d},{\"id\":2,\"status\":%d},{\"id\":3,\"status\":%d},{\"id\":4,\"status\":%d}]}",
-           d1.status, d2.status, d3.status, d4.status);
+           "{\"ssid\":\"%s\",\"devices\":[{\"id\":1,\"status\":%d},{\"id\":2,\"status\":%d},{\"id\":3,\"status\":%d},{\"id\":4,\"status\":%d}]}",
+           ssid, d1.status, d2.status, d3.status, d4.status);
   return String(data);
 }
