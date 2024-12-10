@@ -1,4 +1,4 @@
-package com.example.demo_ucs
+package com.ucs.hive
 
 import io.flutter.embedding.android.FlutterActivity
 

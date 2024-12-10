@@ -1,3 +1,4 @@
+import 'package:demo_ucs/screens/homepage/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -36,6 +37,8 @@ class _ChangeCredentialsPageState extends State<ChangeCredentialsPage> {
       } else {
         showMessage('Failed to update credentials: ${response.body}');
       }
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const ESP32ControllerApp()));
     } catch (e) {
       showMessage('Error: $e');
     } finally {
@@ -75,10 +78,12 @@ class _ChangeCredentialsPageState extends State<ChangeCredentialsPage> {
                   const SizedBox(height: 16),
                   TextFormField(
                     controller: _passwordController,
-                    decoration: const InputDecoration(labelText: 'New Password'),
+                    decoration:
+                        const InputDecoration(labelText: 'New Password'),
                     obscureText: true,
-                    validator: (value) =>
-                        value!.length < 8 ? 'Password must be at least 8 characters' : null,
+                    validator: (value) => value!.length < 8
+                        ? 'Password must be at least 8 characters'
+                        : null,
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton.icon(
