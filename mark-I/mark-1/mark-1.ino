@@ -1,12 +1,19 @@
 #include <WiFi.h>
 #include <AsyncTCP.h>
 #include <ESPAsyncWebServer.h>
-#include <ESPmDNS.h>
 #include <WiFiUdp.h>
+#include <Preferences.h>
 
-// Hotspot credentials
-const char *ssid = "ESP32_Hotspot";
-const char *password = "12345678";
+// Default Hotspot credentials
+const char *defaultSSID = "ESP32_Hotspot";
+const char *defaultPassword = "12345678";
+
+// Current Hotspot credentials
+String ssid;
+String password;
+
+// Preferences for storing credentials persistently
+Preferences preferences;
 
 // UDP settings
 WiFiUDP udp;
@@ -29,15 +36,33 @@ Device d2 = {2, 17, 0};
 Device d3 = {3, 18, 0};
 Device d4 = {4, 19, 0};
 
+// LED to indicate connection status
+const int statusLedPin = 21; // Change pin number based on your setup
+bool isClientConnected = false;
+
 // Function declarations
 void toggleDevice(Device *d);
 void resetAll();
 String getStatusJson();
-void sendInitialStatus();
 void handleUDPDiscovery();
+void checkClientConnection();
 
 void setup() {
   Serial.begin(115200);
+
+  // Initialize Preferences
+  preferences.begin("hotspot", false);
+
+  // Load saved credentials or use default ones
+  ssid = preferences.getString("ssid", defaultSSID);
+  password = preferences.getString("password", defaultPassword);
+
+  // Start the ESP32 in Access Point mode
+  WiFi.mode(WIFI_AP);
+  WiFi.softAP(ssid.c_str(), password.c_str());
+  Serial.printf("Hotspot started with SSID: %s and Password: %s\n", ssid.c_str(), password.c_str());
+  Serial.print("IP Address: ");
+  Serial.println(WiFi.softAPIP());
 
   // Set pin modes and initialize from hardware state
   pinMode(d1.pin, OUTPUT);
@@ -45,12 +70,9 @@ void setup() {
   pinMode(d3.pin, OUTPUT);
   pinMode(d4.pin, OUTPUT);
 
-  // Start the ESP32 in Access Point mode
-  WiFi.mode(WIFI_AP);
-  WiFi.softAP(ssid, password);
-  Serial.println("Hotspot started!");
-  Serial.print("IP Address: ");
-  Serial.println(WiFi.softAPIP());
+  // Initialize status LED pin
+  pinMode(statusLedPin, OUTPUT);
+  digitalWrite(statusLedPin, LOW);
 
   // Start UDP listener for discovery
   udp.begin(udpPort);
@@ -74,22 +96,27 @@ void setup() {
   });
 
   // Endpoint to update the hotspot credentials
-server.on("/updateCredentials", HTTP_POST, [](AsyncWebServerRequest *request) {
-  if (request->hasParam("ssid", true) && request->hasParam("password", true)) {
-    String newSSID = request->getParam("ssid", true)->value();
-    String newPassword = request->getParam("password", true)->value();
+  server.on("/updateCredentials", HTTP_POST, [](AsyncWebServerRequest *request) {
+    if (request->hasParam("ssid", true) && request->hasParam("password", true)) {
+      String newSSID = request->getParam("ssid", true)->value();
+      String newPassword = request->getParam("password", true)->value();
 
-    // Restart AP with new credentials
-    WiFi.softAP(newSSID.c_str(), newPassword.c_str());
-    ssid = newSSID.c_str();
-    password = newPassword.c_str();
+      // Save new credentials to Preferences
+      preferences.putString("ssid", newSSID);
+      preferences.putString("password", newPassword);
+      preferences.end(); // Ensure changes are saved and Preferences is closed
 
-    Serial.printf("Hotspot credentials updated! New SSID: %s, New Password: %s\n", ssid, password);
-    request->send(200, "text/plain", "Credentials updated successfully. Reconnect to the new network.");
-  } else {
-    request->send(400, "text/plain", "Missing ssid or password");
-}
-});
+      // Restart AP with new credentials
+      WiFi.softAP(newSSID.c_str(), newPassword.c_str());
+      ssid = newSSID;
+      password = newPassword;
+
+      Serial.printf("Updated SSID: %s, Password: %s\n", ssid.c_str(), password.c_str());
+      request->send(200, "text/plain", "Credentials updated successfully. Reconnect to the new network.");
+    } else {
+      request->send(400, "text/plain", "Missing ssid or password");
+    }
+  });
 
   // Handle reset request
   server.on("/reset", HTTP_GET, [](AsyncWebServerRequest *request) {
@@ -109,6 +136,7 @@ server.on("/updateCredentials", HTTP_POST, [](AsyncWebServerRequest *request) {
 
 void loop() {
   handleUDPDiscovery();
+  checkClientConnection();
 }
 
 // Function to handle UDP discovery
@@ -127,6 +155,28 @@ void handleUDPDiscovery() {
       udp.print(WiFi.softAPIP().toString());
       udp.endPacket();
       Serial.println("Sent IP address to client");
+    }
+  }
+}
+
+// Function to check if any client is connected to the hotspot
+void checkClientConnection() {
+  if (WiFi.softAPgetStationNum() > 0) {
+    if (!isClientConnected) {
+      Serial.println("Client connected to the hotspot.");
+      isClientConnected = true;
+      digitalWrite(statusLedPin, HIGH); // Turn LED ON when connected
+    }
+  } else {
+    if (isClientConnected) {
+      Serial.println("Client disconnected from the hotspot.");
+      isClientConnected = false;
+    }
+    // Blink LED if no client is connected
+    static unsigned long lastBlinkTime = 0;
+    if (millis() - lastBlinkTime >= 500) {
+      digitalWrite(statusLedPin, !digitalRead(statusLedPin));
+      lastBlinkTime = millis();
     }
   }
 }
