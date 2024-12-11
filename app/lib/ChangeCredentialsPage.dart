@@ -1,3 +1,4 @@
+import 'package:demo_ucs/components/navigation/navigation.dart';
 import 'package:demo_ucs/screens/homepage/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -37,8 +38,8 @@ class _ChangeCredentialsPageState extends State<ChangeCredentialsPage> {
       } else {
         showMessage('Failed to update credentials: ${response.body}');
       }
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => const ESP32ControllerApp()));
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const Navigation()));
     } catch (e) {
       showMessage('Error: $e');
     } finally {

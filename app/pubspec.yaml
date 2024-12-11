@@ -47,6 +47,7 @@ dependencies:
   firebase_auth: ^5.3.4
   cloud_firestore: ^5.5.1
   toastification: ^2.3.0
+  enefty_icons: ^1.0.7
 
 dev_dependencies:
   flutter_test:

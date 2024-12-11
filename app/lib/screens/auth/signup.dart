@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:demo_ucs/components/navigation/navigation.dart';
 import 'package:demo_ucs/constants/colors/colors.dart';
 import 'package:demo_ucs/models/user_data.dart';
 import 'package:demo_ucs/models/usermodel.dart';
@@ -108,7 +109,7 @@ class _SignupState extends State<Signup> with SingleTickerProviderStateMixin {
         context,
         PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) =>
-              const ESP32ControllerApp(),
+              const Navigation(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(
               opacity: animation,

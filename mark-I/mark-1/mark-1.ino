@@ -28,13 +28,28 @@ struct Device {
   const int id;
   const int pin;
   int status; // 0: off, 1: on
+  String name; // Name of the device
 };
 
+
 // Initialize devices
-Device d1 = {1, 16, 0};
-Device d2 = {2, 17, 0};
-Device d3 = {3, 18, 0};
-Device d4 = {4, 19, 0};
+Device d1 = {1, 16, 0, "Switch 1"};
+Device d2 = {2, 17, 0, "Switch 2"};
+Device d3 = {3, 18, 0, "Switch 3"};
+Device d4 = {4, 19, 0, "Switch 4"}; 
+
+void saveDeviceName(int id, const String &name) {
+    String key = "name" + String(id);
+    preferences.putString(key.c_str(), name);
+}
+
+void loadDeviceNames() {
+    d1.name = preferences.getString("name1", "Switch 1");
+    d2.name = preferences.getString("name2", "Switch 2");
+    d3.name = preferences.getString("name3", "Switch 3");
+    d4.name = preferences.getString("name4", "Switch 4");
+}
+
 
 // LED to indicate connection status
 const int statusLedPin = 21; // Change pin number based on your setup
@@ -52,6 +67,8 @@ void setup() {
 
   // Initialize Preferences
   preferences.begin("hotspot", false);
+  preferences.begin("device_names", false);
+  loadDeviceNames();
 
   // Load saved credentials or use default ones
   ssid = preferences.getString("ssid", defaultSSID);
@@ -94,6 +111,23 @@ void setup() {
       request->send(400, "text/plain", "Missing button_id");
     }
   });
+
+  server.on("/updateName", HTTP_POST, [](AsyncWebServerRequest *request) {
+        if (request->hasParam("id", true) && request->hasParam("name", true)) {
+            int id = request->getParam("id", true)->value().toInt();
+            String name = request->getParam("name", true)->value();
+
+            if (id == d1.id) { d1.name = name; saveDeviceName(d1.id, name); }
+            if (id == d2.id) { d2.name = name; saveDeviceName(d2.id, name); }
+            if (id == d3.id) { d3.name = name; saveDeviceName(d3.id, name); }
+            if (id == d4.id) { d4.name = name; saveDeviceName(d4.id, name); }
+
+            request->send(200, "text/plain", "Name updated successfully");
+        } else {
+            request->send(400, "text/plain", "Missing id or name");
+        }
+    });
+
 
   // Endpoint to update the hotspot credentials
   server.on("/updateCredentials", HTTP_POST, [](AsyncWebServerRequest *request) {
@@ -192,14 +226,15 @@ void toggleDevice(Device *d) {
 void resetAll() {
   if (d1.status == 1) toggleDevice(&d1);
   if (d2.status == 1) toggleDevice(&d2);
-  if (d3.status == 1) toggleDevice(&d3);
+  if (d3.status == 1) toggleDevice  (&d3);
   if (d4.status == 1) toggleDevice(&d4);
 }
 
 String getStatusJson() {
-  char data[300];
-  snprintf(data, sizeof(data),
-           "{\"ssid\":\"%s\",\"devices\":[{\"id\":1,\"status\":%d},{\"id\":2,\"status\":%d},{\"id\":3,\"status\":%d},{\"id\":4,\"status\":%d}]}",
-           ssid, d1.status, d2.status, d3.status, d4.status);
-  return String(data);
+    char data[500];
+    snprintf(data, sizeof(data),
+             "{\"ssid\":\"%s\",\"devices\":[{\"id\":1,\"name\":\"%s\",\"status\":%d},{\"id\":2,\"name\":\"%s\",\"status\":%d},{\"id\":3,\"name\":\"%s\",\"status\":%d},{\"id\":4,\"name\":\"%s\",\"status\":%d}]}",
+             ssid.c_str(), d1.name.c_str(), d1.status, d2.name.c_str(), d2.status,
+             d3.name.c_str(), d3.status, d4.name.c_str(), d4.status);
+    return String(data);
 }

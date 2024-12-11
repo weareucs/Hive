@@ -1,21 +1,16 @@
-import 'dart:async';
-
-import 'package:demo_ucs/components/navigation/navigation.dart';
 import 'package:demo_ucs/constants/colors/colors.dart';
-import 'package:demo_ucs/screens/auth/auth.dart';
-import 'package:demo_ucs/screens/homepage/homepage.dart';
 import 'package:demo_ucs/utils/screen_size.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Splash extends StatefulWidget {
-  const Splash({super.key});
+class Loading extends StatefulWidget {
+  const Loading({super.key});
 
   @override
-  State<Splash> createState() => _SplashState();
+  State<Loading> createState() => _LoadingState();
 }
 
-class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
+class _LoadingState extends State<Loading> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
   @override
@@ -29,10 +24,6 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
 
     _controller.addListener(() {
       setState(() {});
-    });
-    Timer(Duration(seconds: 1), () {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const Navigation()));
     });
   }
 
