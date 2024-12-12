@@ -241,8 +241,7 @@ class _ESP32ControllerAppState extends State<ESP32ControllerApp>
     try {
       final response = await http.post(
         Uri.parse('$esp32Url/updateName'),
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({"id": id, "name": newName}),
+        body: {"id": id.toString(), "name": newName},
       );
       if (response.statusCode == 200) {
         await fetchStatus();
@@ -356,6 +355,7 @@ class _ESP32ControllerAppState extends State<ESP32ControllerApp>
                     padding: const EdgeInsets.only(
                         left: 15, right: 15, top: 70, bottom: 15),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -399,7 +399,7 @@ class _ESP32ControllerAppState extends State<ESP32ControllerApp>
                               crossAxisCount: 2, // Two items per row
                               crossAxisSpacing: 8.0, // Spacing between columns
                               mainAxisSpacing: 8.0, // Spacing between rows
-                              childAspectRatio: 3 / 5,
+                              childAspectRatio: 3 / 4,
                             ),
                             itemCount: devices.length,
                             itemBuilder: (context, index) {
@@ -413,12 +413,17 @@ class _ESP32ControllerAppState extends State<ESP32ControllerApp>
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(
-                                      !isOn
-                                          ? Icons.toggle_on
-                                          : Icons.toggle_off,
-                                      size: 48,
-                                      color: !isOn ? primary : Colors.grey,
+                                    InkWell(
+                                      onTap: () {
+                                        toggleDevice(deviceId);
+                                      },
+                                      child: Icon(
+                                        !isOn
+                                            ? Icons.toggle_on
+                                            : Icons.toggle_off,
+                                        size: 48,
+                                        color: !isOn ? primary : Colors.grey,
+                                      ),
                                     ),
                                     const SizedBox(height: 8.0),
                                     Text(
@@ -434,20 +439,20 @@ class _ESP32ControllerAppState extends State<ESP32ControllerApp>
                                         color: grey,
                                       ),
                                     ),
-                                    const SizedBox(height: 8.0),
-                                    ElevatedButton(
-                                      onPressed: () => toggleDevice(deviceId),
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            !isOn ? primary : white,
-                                      ),
-                                      child: Text(
-                                        'Toggle',
-                                        style: GoogleFonts.epilogue(
-                                          color: !isOn ? white : black,
-                                        ),
-                                      ),
-                                    ),
+                                    // const SizedBox(height: 8.0),
+                                    // ElevatedButton(
+                                    //   onPressed: () => toggleDevice(deviceId),
+                                    //   style: ElevatedButton.styleFrom(
+                                    //     backgroundColor:
+                                    //         !isOn ? primary : white,
+                                    //   ),
+                                    //   child: Text(
+                                    //     'Toggle',
+                                    //     style: GoogleFonts.epilogue(
+                                    //       color: !isOn ? white : black,
+                                    //     ),
+                                    //   ),
+                                    // ),
                                     const SizedBox(height: 8.0),
                                     ElevatedButton(
                                       onPressed: () => showRenameDialog(
@@ -467,20 +472,27 @@ class _ESP32ControllerAppState extends State<ESP32ControllerApp>
                             },
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        ElevatedButton.icon(
-                          onPressed: resetDevices,
-                          icon: const Icon(
-                            EneftyIcons.rotate_right_outline,
-                            color: white,
+                        Text(
+                          "#ControlWithEase",
+                          style: GoogleFonts.epilogue(
+                            fontSize: screenSize.widthPercentage(8),
+                            fontWeight: FontWeight.bold,
+                            color: grey,
                           ),
-                          label: Text(
-                            'Reset All Devices',
-                            style: GoogleFonts.epilogue(color: white),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red),
                         ),
+                        // ElevatedButton.icon(
+                        //   onPressed: resetDevices,
+                        //   icon: const Icon(
+                        //     EneftyIcons.rotate_right_outline,
+                        //     color: white,
+                        //   ),
+                        //   label: Text(
+                        //     'Reset All Devices',
+                        //     style: GoogleFonts.epilogue(color: white),
+                        //   ),
+                        //   style: ElevatedButton.styleFrom(
+                        //       backgroundColor: Colors.red),
+                        // ),
                       ],
                     ),
                   ),
