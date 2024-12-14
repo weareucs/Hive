@@ -1,12 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../../components/navbar/Navbar";
+import Footer from "../../components/footer/Footer";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
 import logo from "../../assets/logo.png";
 import why from "../../assets/why.png";
 import s from "../../assets/switch.webp";
 import "./Homepage.css";
-import Footer from "../../components/footer/Footer";
-
+import Items from "../../components/product/Items";
 const Homepage = () => {
+  useEffect(() => {
+    const map = L.map("map").setView([23.0054366, 72.6185031], 13); // London coordinates
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(map);
+
+    const marker = L.marker([23.0054366, 72.6185031]).addTo(map);
+
+    marker.bindPopup("<b>Location</b><br>Ahmedabad, Gujarat").openPopup();
+
+    return () => {
+      map.remove();
+    };
+  }, []);
+
   return (
     <div>
       <Navbar active={"Homepage"} />
@@ -26,15 +45,15 @@ const Homepage = () => {
               <i class="bi bi-download"></i> Download APK{" "}
             </button>
             &nbsp;
-            <button className="btn btn-outline-dark">
+            {/* <button className="btn btn-outline-dark">
               <i class="bi bi-question-circle"></i> How it works
-            </button>
+            </button> */}
           </div>
         </div>
       </section>
 
       <section className="container-fluid why p-5">
-        <div className="container my-5">
+        <div className="my-5">
           <div className="d-flex flex-lg-row flex-column justify-content-between align-items-center">
             <h1 className="d-block d-md-none mb-5 fw-5">Why Choose Us?</h1>
             <ul>
@@ -102,54 +121,30 @@ const Homepage = () => {
         </ul>
       </section>
 
-      <section class="product py-5">
-        <div class="container px-4 px-lg-5 mt-5">
-          <h1 className="mb-4">Smart Products</h1>
-          <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-start">
-            <div class="col mb-5">
-              <div class="card h-100">
-                <img
-                  class="card-img-top p-3"
-                  src="https://5.imimg.com/data5/SELLER/Default/2023/9/346245938/DC/WT/RF/71382662/electrical-switch-board.png"
-                  alt="..."
-                />
-                <div class="card-body p-4">
-                  <div class="text-center">
-                    <h5 class="fw-bolder">Bee Switch Board</h5>
-                    ₹1799.00 - ₹1999.00
-                  </div>
-                </div>
-                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                  <div class="text-center">
-                    <a class="btn btn-outline-dark mt-auto" href="#">
-                      View options
-                    </a>
-                  </div>
-                </div>
-              </div>
+      <Items />
+      {/* Map Section */}
+      <section className="contact py-5 bg-light">
+        <div className="container px-4 px-lg-5">
+          <h1 className=" mb-4">Contact Us</h1>
+          <div className="row gx-4 gx-lg-5 align-items-center">
+            <div className="col-md-6 mb-5">
+              <p>
+                <strong>Email:</strong>{" "}
+                <a href="mailto:weareucs.solutions@gmail.com">
+                  weareucs.solutions@gmail.com
+                </a>
+              </p>
+              <p>
+                <strong>Phone:</strong>{" "}
+                <a href="tel:+1234567890">+91 9537527143</a>
+                ,&nbsp;
+                <a href="tel:+1234567890">+91 9313181776</a>,&nbsp;
+                <a href="tel:+1234567890">+91 9925249492</a>
+              </p>
+              <p>Feel free to reach out to us for any inquiries or support.</p>
             </div>
-
-            <div class="col mb-5">
-              <div class="card h-100">
-                <img
-                  class="card-img-top"
-                  src="https://img.freepik.com/premium-vector/switch-board-with-buttons-plug-socket-grey-white-color-with-detail-vector-illustration_11410-584.jpg"
-                  alt="..."
-                />
-                <div class="card-body p-4">
-                  <div class="text-center">
-                    <h5 class="fw-bolder">Bee Extension Board</h5>
-                    ₹1499.00 - ₹1799.00
-                  </div>
-                </div>
-                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                  <div class="text-center">
-                    <a class="btn btn-outline-dark mt-auto" href="#">
-                      View options
-                    </a>
-                  </div>
-                </div>
-              </div>
+            <div className="col-md-6 mb-5">
+              <div id="map" style={{ height: "400px", width: "100%" }}></div>
             </div>
           </div>
         </div>

@@ -10,7 +10,11 @@ const Footer = () => {
           </div>
 
           <div>
-            <a href="" class="text-reset">
+            <a
+              href="https://www.instagram.com/we.are.ucs?utm_source=qr&igsh=c2x2cXhuNm8xb2xi"
+              target="_blank"
+              class="text-reset"
+            >
               <i class="bi bi-instagram"></i>
             </a>
           </div>
@@ -30,13 +34,19 @@ const Footer = () => {
               <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
                 <h6 class="text-uppercase fw-bold mb-4">Products</h6>
                 <p>
-                  <a href="#!" class="text-reset">
-                    Smart Switch Boards
+                  <a
+                    href="mailto:weareucs.solutions@gmail.com?subject=Enquiry about Bee Switch Board&body=I would like to know more about the Bee Switch Board."
+                    class="text-reset"
+                  >
+                    Bee Switch Boards
                   </a>
                 </p>
                 <p>
-                  <a href="#!" class="text-reset">
-                    Smart Extension Boards
+                  <a
+                    href="mailto:weareucs.solutions@gmail.com?subject=Enquiry about Bee Extension Board&body=I would like to know more about the Bee Extension Board."
+                    class="text-reset"
+                  >
+                    Bee Extension Boards
                   </a>
                 </p>
               </div>
@@ -54,7 +64,10 @@ const Footer = () => {
                   </a>
                 </p>
                 <p>
-                  <a href="#!" class="text-reset">
+                  <a
+                    href="mailto:weareucs.solutions@gmail.com"
+                    class="text-reset"
+                  >
                     Help
                   </a>
                 </p>
@@ -84,11 +97,23 @@ const Footer = () => {
           </div>
         </section>
 
-        <div class="text-center p-4">
-          © 2024 Copyright: &nbsp;
-          <a class="text-reset fw-bold" href="https://mdbootstrap.com/">
-            Hive.
-          </a>
+        <div className="d-flex justify-content-between">
+          <div class="text-center p-4">
+            © 2024 Copyright: &nbsp;
+            <a class="text-reset fw-bold" href="https://hivebyucs.vercel.app/">
+              Hive.
+            </a>
+          </div>
+          <div class="text-center p-4">
+            Developed & Maintained: &nbsp;
+            <a
+              class="text-reset fw-bold"
+              target="_blank"
+              href="https://ud15.netlify.app/"
+            >
+              ud.dev
+            </a>
+          </div>
         </div>
       </footer>
     </div>

@@ -44,6 +44,33 @@
     content: "";
   }
 
+  .card img {
+    object-fit: contain; /* Ensures images scale properly */
+    max-height: 200px; /* Prevents overly large images on mobile */
+  }
+  .card-body {
+    min-height: 120px; /* Consistent card height */
+  }
+  
+  .contact{
+    background-color: #fbc02d;
+  }
+
+  .contact iframe {
+    border-radius: 8px; /* Rounded corners for the map */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  }
+  .contact h1 {
+    font-size: 3.5rem;
+  }
+  .contact p a {
+    color: #fbc02d    ; /* Highlight links */
+    text-decoration: none;
+  }
+  .contact p a:hover {
+    text-decoration: underline;
+  }
+  
 
 .how{
     font-size: 3.5rem;

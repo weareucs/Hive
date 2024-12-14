@@ -33,17 +33,31 @@ const Navbar = ({ active }) => {
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a
+                  class="nav-link"
+                  href="/products"
+                  style={active == "Products" ? { color: "#fbc02d" } : {}}
+                >
                   Products
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a
+                  class="nav-link"
+                  href="/about"
+                  style={active == "About" ? { color: "#fbc02d" } : {}}
+                >
                   About
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link">Contact</a>
+                <a
+                  class="nav-link"
+                  href="/contact"
+                  style={active == "Contact" ? { color: "#fbc02d" } : {}}
+                >
+                  Contact
+                </a>
               </li>
             </ul>
           </div>
