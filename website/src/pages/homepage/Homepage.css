@@ -1,0 +1,76 @@
+.logo {
+    width: 35rem;
+}
+
+.head {
+    color: white;
+    font-size: 2rem;
+}
+
+.why{
+    background-color: white;
+}
+
+.btn{
+    border-radius: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.timeline {
+    border-left: 1px solid hsl(0, 0%, 90%);
+    position: relative;
+    list-style: none;
+  }
+  
+  .timeline .timeline-item {
+    position: relative;
+  }
+  
+  .timeline .timeline-item:after {
+    position: absolute;
+    display: block;
+    top: 0;
+  }
+  
+  .timeline .timeline-item:after {
+    background-color: hsl(0, 0%, 90%);
+    left: -38px;
+    border-radius: 50%;
+    height: 11px;
+    width: 11px;
+    content: "";
+  }
+
+
+.how{
+    font-size: 3.5rem;
+}
+
+.product{
+    background-color: white;
+}
+
+/* Adjust styles for tablets and smaller screens */
+@media (max-width: 768px) {
+    .logo {
+        width: 30rem; /* Reduce size for smaller screens */
+    }
+
+    .head {
+        font-size: 1.5rem; /* Adjust font size */
+    }
+}
+
+/* Adjust styles for mobile phones */
+@media (max-width: 480px) {
+    .logo {
+        width: 20rem; /* Further reduce size for phones */
+    }
+
+    .head {
+        font-size: 1rem; /* Make text smaller */
+    }
+}

@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,100..900;1,100..900&display=swap');
+
+body{
+  font-family: "Epilogue", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  background-color: #fbc02d;
+}
+
+.gradient-text-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #000; /* Black background */
+}
+
+.gradient-text {
+  font-family: "Epilogue", sans-serif;
+  font-size: 8vw; /* Responsive font size */
+  font-weight: bold;
+
+  /* Gradient Text Styling */
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; /* Makes text transparent */
+  color: transparent;
+  background-size: 200%; /* For smoother gradient movement */
+}

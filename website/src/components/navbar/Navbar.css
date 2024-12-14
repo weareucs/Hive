@@ -1,0 +1,25 @@
+.navbar{
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 1%;
+    border-radius: 50px;
+    padding: 10px;
+}
+
+.navbar-brand{
+    color: #fbc02d;
+    font-weight: bold;
+    font-size: 1.7rem;
+}
+
+.active{
+    color: #fbc02d;
+}
+
+.navbar-toggler{
+    border: none;
+}
+
+.navbar-toggler:focus{
+    box-shadow: none;
+}
