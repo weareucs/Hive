@@ -41,9 +41,12 @@ const Homepage = () => {
               appliances, empowering you to control them effortlessly from
               anywhere.
             </p>
-            <button className="btn btn-dark">
+            <a
+              className="btn btn-dark"
+              href="https://github.com/weareucs/Hive/raw/refs/heads/main/app/apk/Hive.apk"
+            >
               <i class="bi bi-download"></i> Download APK{" "}
-            </button>
+            </a>
             &nbsp;
             {/* <button className="btn btn-outline-dark">
               <i class="bi bi-question-circle"></i> How it works
@@ -93,10 +96,7 @@ const Homepage = () => {
 
       <section class="container py-5 d-flex flex-column flex-lg-row justify-content-around align-items-center">
         <div className="text-center mb-sm-5">
-          <h1 className="how fw-5 text-light">How It Works!</h1>
-          <button className="btn btn-dark">
-            <i class="bi bi-download"></i> Download APK{" "}
-          </button>
+          <h1 className="how fw-5 mb-4 text-light">How It Works!</h1>
         </div>
 
         <ul class="timeline text-light">
